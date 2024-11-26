@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spell Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        .word-suggestion {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Spell Checker</h1>
+    <label for="inputWord">Enter a word:</label>
+    <input type="text" id="inputWord" placeholder="Type a word" />
+    <button onclick="getSuggestions()">Get Suggestions</button>
+
+    <div id="result"></div>
+
+    <script src="spellChecker.js"></script>
+</body>
+</html>
