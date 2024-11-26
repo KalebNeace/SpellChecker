@@ -1,7 +1,7 @@
 // Global variable for storing the dictionary
 let dictionary = [];
 
-// Helper function to check if a character is a vowel
+// Function to check if a character is a vowel
 function isVowel(c) {
     return 'aeiouAEIOU'.includes(c);
 }
@@ -25,7 +25,7 @@ function minPenalty(inputWord, dictWord) {
     const n = inputWord.length;
     const m = dictWord.length;
 
-    // Create a DP table
+    // Create a table
     let dp = Array.from({ length: n + 1 }, () => Array(m + 1).fill(0));
 
     // Initialize the first row and column with gap penalties
@@ -36,7 +36,7 @@ function minPenalty(inputWord, dictWord) {
         dp[0][j] = dp[0][j - 1] + 2;
     }
 
-    // Fill the DP table
+    // Fill the table
     for (let i = 1; i <= n; i++) {
         for (let j = 1; j <= m; j++) {
             let penalty = getPenalty(inputWord[i - 1], dictWord[j - 1]);
