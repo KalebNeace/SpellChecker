@@ -71,14 +71,6 @@ function loadDictionary() {
         .then(text => {
             // Split the text into words and store them in the dictionary array
             dictionary = text.split('\n').map(word => word.trim().toLowerCase()).filter(word => word);
-
-            // Check each word for numbers or special characters and throw an error if any are found
-            for (let word of dictionary) {
-                if (/[^a-zA-Z]/.test(word)) {
-                    throw new Error(`Dictionary contains invalid word: "${word}". Only letters are allowed.`);
-                }
-            }
-
             console.log("Dictionary loaded with " + dictionary.length + " words.");
         })
         .catch(error => {
@@ -86,47 +78,46 @@ function loadDictionary() {
         });
 }
 
-// Function to check for special characters or numbers in the input
-function validateInput(inputWord) {
-    if (/[^a-zA-Z]/.test(inputWord)) {
-        throw new Error("Input contains invalid characters. Only letters are allowed.");
-    }
-}
-
 // Function to display the suggestions
-function getSuggestions() {
-    let inputWord = document.getElementById("inputWord").value.trim();
-
-    // Validate the input word to ensure it contains only letters
-    try {
-        validateInput(inputWord);
-
-        if (!inputWord) {
-            alert("Please enter a valid word.");
-            return;
-        }
-
-        if (dictionary.length === 0) {
-            alert("Dictionary is not loaded yet.");
-            return;
-        }
-
-        // Get top N suggestions based on the validated input word
-        const suggestions = getTopSuggestions(inputWord, dictionary);
-
-        const resultDiv = document.getElementById("result");
-        resultDiv.innerHTML = "<h2>Suggestions:</h2>";
-
-        suggestions.forEach((suggestion) => {
-            const suggestionDiv = document.createElement("div");
-            suggestionDiv.classList.add("word-suggestion");
-            suggestionDiv.innerText = `${suggestion.word}: Penalty Score = ${suggestion.score}`;
-            resultDiv.appendChild(suggestionDiv);
-        });
-    } catch (error) {
-        alert(error.message);  // Display the error message in an alert
-    }
+// Function to check if the word contains any special characters or numbers
+function isValidWord(word) {
+    // Regular expression to match any character that is not a letter
+    const invalidChars = /[^a-zA-Z]/;
+    return !invalidChars.test(word);  // Returns true if valid, false if invalid
 }
+
+function getSuggestions() {
+    const inputWord = document.getElementById("inputWord").value.trim().toLowerCase();
+    
+    // Check if the input word is valid (contains only letters)
+    if (!isValidWord(inputWord)) {
+        alert("Please enter a valid word");
+        return;
+    }
+
+    if (!inputWord) {
+        alert("Please enter a word.");
+        return;
+    }
+
+    if (dictionary.length === 0) {
+        alert("Dictionary is not loaded yet.");
+        return;
+    }
+
+    const suggestions = getTopSuggestions(inputWord, dictionary);
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "<h2>Suggestions:</h2>";
+
+    suggestions.forEach((suggestion) => {
+        const suggestionDiv = document.createElement("div");
+        suggestionDiv.classList.add("word-suggestion");
+        suggestionDiv.innerText = `${suggestion.word}: Penalty Score = ${suggestion.score}`;
+        resultDiv.appendChild(suggestionDiv);
+    });
+}
+
 
 // Load the dictionary when the page is loaded
 window.onload = loadDictionary;
